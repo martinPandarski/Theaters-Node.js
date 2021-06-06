@@ -1,0 +1,16 @@
+  <nav>
+            <a href="/">Theater</a>
+            <ul>
+                <li><a href="/">Home </a></li>
+                {{#if isAuth}}
+                <li><a href="/logout">Logout</a></li>
+                {{else}}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+
+        {{!-- <section class="notifications error">
+            <p>Message...</p>
+        </section> --}}

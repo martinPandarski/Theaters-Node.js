@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+    <title>Theaters</title>
+</head>
+<body>
+  <div class="container">
+    {{> header }}
+    {{#if error}}
+        <section class="notifications error">
+            <p>{{error.message}}</p>
+        </section>
+        {{/if}}
+
+    <main>{{{body}}}</main>
+  </div>
+  
+  {{> footer }}
+</body>
+</html>
