@@ -10,11 +10,16 @@ module.exports = (app) => {
 
 //HOME
     app.get('/', (req, res, next) => {
-        playService.getAll()
-        .then(plays => {
-            res.render('partials/home', {plays})
-        })
-        .catch(next)
+
+        if(req.user){
+            playService.getAll()
+            .then(plays => {
+                res.render('partials/home', {plays})
+            })
+            .catch(next)
+        }else{
+            res.render('partials/home')
+        }
     });
 
 //PLAYS
@@ -38,6 +43,31 @@ module.exports = (app) => {
         })
         .catch(next)
     })
+
+    app.get('/edit/:playId',isAuth, (req, res) => {
+        playService.getOne(req.params.playId)
+        .then(play => {
+            res.render('partials/editPlay', {play});
+        })
+        
+    })
+    app.post('/edit/:playId',isAuth, (req, res, next) => {
+        let {title, description, imageUrl, isPublic} = req.body;
+        let playData = {
+            title,
+            description,
+            imageUrl,
+            isPublic : Boolean(isPublic)
+        }
+        playService.create(playData)
+        .then(createdPlay => {
+            console.log(createdPlay)
+            res.redirect('/')
+        })
+        .catch(next)
+    })
+
+
 
     //Details
     app.get('/details/:playId',(req, res, next) => {
