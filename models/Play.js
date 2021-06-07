@@ -27,7 +27,11 @@ const playSchema = new mongoose.Schema({
     likedByUsers : [{
         type: mongoose.Types.ObjectId,
         ref: 'User'
-    }]
+    }],
+    creator: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 // playSchema.pre('save', function(next){

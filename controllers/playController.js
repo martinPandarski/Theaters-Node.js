@@ -14,7 +14,7 @@ router.post('/create', isAuth, (req, res, next) => {
         imageUrl,
         isPublic : Boolean(isPublic)
     }
-    playService.create(playData)
+    playService.create(playData, req.user._id)
     .then(createdPlay => {
         res.redirect('/')
     })
@@ -59,7 +59,6 @@ router.get('/like/:playId', (req, res, next) => {
 router.get('/details/:playId',(req, res, next) => {
     playService.getOne(req.params.playId, req.user._id)
     .then(play => {
-        console.log(play)
         res.render('partials/details', play)
     })
     .catch(next)

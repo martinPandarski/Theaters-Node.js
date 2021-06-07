@@ -2,8 +2,8 @@ const Play = require('../models/Play');
 
 
 
-const create = (playData) => {
-   let play = new Play({...playData, createdAt: new Date()});
+const create = (playData, userId) => {
+   let play = new Play({...playData, createdAt: new Date(), creator: userId});
    return play.save();
 }
 
@@ -19,7 +19,7 @@ const getOne = (id, userId) => {
      .lean()
      .then(play => {
              play.likedPlays = play.likedByUsers.some(x => x._id = userId)
-
+             play.isOwn = play.creator == userId
              return play
             }
          )
