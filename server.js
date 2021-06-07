@@ -1,12 +1,13 @@
 const express = require('express');
 const errorHandler = require('./middlewares/errorHandler')
 const {PORT} = require('./config/config');
+const routes = require('./routes')
 
 const app = express();
 require('./config/mongoose')
 require('./config/express')(app)
 
-require('./routes')(app)
+app.use(routes)
 
 app.use(errorHandler)
 

@@ -4,17 +4,17 @@ const hbs = require('express-handlebars');
 const auth = require('../middlewares/auth')
 
 
-module.exports =  (app) => {
-        app.engine('.hbs', hbs({
-            extname: '.hbs'
+module.exports =  function(app){
+        app.engine('hbs', hbs({
+            extname: 'hbs'
         }))
-        app.set('view engine', '.hbs');
-        app.use('/public', express.static('public'));
-
+        app.set('view engine', 'hbs');
         app.use(express.urlencoded({extended: true}));
+        app.use('/public', express.static('public'));
         app.use(cookieParser());
-
         app.use(auth);
+
+
 }
 
 

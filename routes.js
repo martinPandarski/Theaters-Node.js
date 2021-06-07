@@ -2,130 +2,15 @@ const {
     Router
 } = require('express');
 const router = Router();
-const isAuth = require('./middlewares/isAuth');
-const authService = require('./services/authService');
-const playService = require('./services/playService')
-const {COOKIE_NAME} = require('./config/config')
-module.exports = (app) => {
+const homeController = require('./controllers/homeController');
+const authController = require('./controllers/authController');
+const playController = require('./controllers/playController');
 
-//HOME
-    app.get('/', (req, res, next) => {
-
-        if(req.user){
-            playService.getAll()
-            .then(plays => {
-                res.render('partials/home', {plays})
-            })
-            .catch(next)
-        }else{
-            res.render('partials/home')
-        }
-    });
-
-//PLAYS
-    app.get('/create',isAuth, (req, res) => {
-        res.render('partials/createPlay');
-        
-    })
-    app.post('/create',isAuth, (req, res, next) => {
-        let {title, description, imageUrl, isPublic} = req.body;
-        let playData = {
-            title,
-            description,
-            imageUrl,
-            isPublic : Boolean(isPublic)
-        }
-        console.log(playData)
-        playService.create(playData)
-        .then(createdPlay => {
-            console.log(createdPlay)
-            res.redirect('/')
-        })
-        .catch(next)
-    })
-
-    app.get('/edit/:playId',isAuth, (req, res) => {
-        playService.getOne(req.params.playId)
-        .then(play => {
-            res.render('partials/editPlay', {play});
-        })
-        
-    })
-    app.post('/edit/:playId',isAuth, (req, res, next) => {
-        let {title, description, imageUrl, isPublic} = req.body;
-        let playData = {
-            title,
-            description,
-            imageUrl,
-            isPublic : Boolean(isPublic)
-        }
-        playService.create(playData)
-        .then(createdPlay => {
-            console.log(createdPlay)
-            res.redirect('/')
-        })
-        .catch(next)
-    })
+router.use('/', homeController)
+router.use('/auth', authController);
+router.use('/play', playController);
 
 
-
-    //Details
-    app.get('/details/:playId',(req, res, next) => {
-        
-        playService.getOne(req.params.playId)
-        .then(play => {
-            res.render('partials/details', {play})
-        })
-        .catch(next)
-    })
+module.exports = router;
 
 
-
-// AUTH
-    app.get('/logout', (req,res) => {
-        res.clearCookie(COOKIE_NAME);
-        res.redirect('/')
-    })
-    app.get('/login', (req, res) => {
-        res.render('partials/login')
-    });
-    app.post('/login', (req, res, next)=>{
-        const {username, password} = req.body;
-        
-            authService.login(username, password)
-            .then(token => {
-                res.cookie(COOKIE_NAME, token, {httpOnly: true})
-                
-               res.redirect('/')
-            })
-            .catch(err => {
-               next(err)
-            }) 
-
-    });
-
-    app.get('/register', (req, res) => {
-        res.render('partials/register')
-    });
-
-    app.post('/register', (req, res, next)=>{
-        const {username, password, rePassword} = req.body;
-        if(password != rePassword){
-            res.render('partials/register', {error: {message : 'Passwords do not match.'}})
-            return;
-        }
-        authService.register(username, password)
-        .then(newUser => {
-           res.redirect('/login')
-        })
-        .catch(err => {
-           next(err)
-        }) 
-
-          
-
-    });
-    
-
-    
-}
