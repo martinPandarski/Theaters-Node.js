@@ -37,11 +37,19 @@ const likePlay = (playId, userId) => {
 
 }
 
+const deletePlay = (playId) => {
+   return Play.deleteOne({_id : playId})
+}
 
+const updateOne = (playId, playData) => {
+    return Play.updateOne({_id: playId}, playData )
+}
 
 module.exports = {
     create,
     getAll,
     getOne,
-    likePlay
+    likePlay,
+    deletePlay,
+    updateOne
 }

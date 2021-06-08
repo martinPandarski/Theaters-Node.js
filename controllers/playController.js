@@ -21,12 +21,15 @@ router.post('/create', isAuth, (req, res, next) => {
     .catch(next)
 })
 
-router.get('/edit/:playId',isAuth, (req, res) => {
+//EDIT PLAY
+
+router.get('/edit/:playId',isAuth, (req, res, next) => {
     playService.getOne(req.params.playId, req.user._id)
     .then(play => {
+        play.checked = play.isPublic ? 'checked' : ''
         res.render('partials/editPlay', {play});
     })
-    
+    .catch(next)
 })
 router.post('/edit/:playId', isAuth, (req, res, next) => {
     let {title, description, imageUrl, isPublic} = req.body;
@@ -36,9 +39,10 @@ router.post('/edit/:playId', isAuth, (req, res, next) => {
         imageUrl,
         isPublic : Boolean(isPublic)
     }
-    playService.create(playData)
-    .then(createdPlay => {
-        
+    
+    playService.updateOne(req.params.playId, playData)
+    .then(updatedPlay => {
+       
         res.redirect('/')
     })
     .catch(next)
@@ -64,6 +68,14 @@ router.get('/details/:playId',(req, res, next) => {
     .catch(next)
 })
 
+//DELETE
+router.get('/delete-play/:playId', (req,res, next) => {
+    playService.deletePlay(req.params.playId)
+    .then(() => {
+        res.redirect('/')
+    })
+    .catch(next)
+})
 
 
 
