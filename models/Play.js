@@ -4,17 +4,17 @@ const mongoose = require('mongoose');
 const playSchema = new mongoose.Schema({
     title : {
         type: String,
-        required: true,
+        required: [true, 'All fields should be filled out.'],
         unique: true
     },
     description : {
         type: String,
-        required: true,
+        required: [true, 'All fields should be filled out.'],
         maxLength: 50,
     },
     imageUrl : {
         type: String,
-        required: true
+        required: [true, 'All fields should be filled out.'],
     },
     isPublic : {
         type: Boolean,

@@ -3,13 +3,24 @@ const router = Router();
 const playService = require('../services/playService')
 
 router.get('/', (req, res, next) => {
-        playService.getAll()
+    
+     if(req.user){
+        playService.getAll(req.query.sortBy)
         .then(plays => {
 
             res.render('partials/home', {plays})
         })
         .catch(next)
-    
+        
+    }
+    else{
+        // res.render('partials/home')
+        playService.getPopular(3)
+        .then(plays => {
+            res.render('partials/home', {plays})
+        })
+        .catch(next)
+    }
 });
 
 

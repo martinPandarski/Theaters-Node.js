@@ -7,10 +7,18 @@ const create = (playData, userId) => {
    return play.save();
 }
 
-const getAll = () => {
-    return Play.find({})
-     .sort({createdAt: -1})
-     .lean();
+const getAll = (sortQuery) => {
+   if(sortQuery == 'createdAt'){
+    return Play.find({}).sort({sortQuery: 1}).lean();
+   }else if(sortQuery == 'likedByUsers'){
+       console.log(sortQuery)
+    return Play.find({}).sort({sortQuery: 1}).lean(); 
+   }else{
+       return Play.find({})
+        .sort({createdAt: -1})
+        .lean();
+   }
+
 }
 
 const getOne = (id, userId) => {
@@ -45,11 +53,16 @@ const updateOne = (playId, playData) => {
     return Play.updateOne({_id: playId}, playData )
 }
 
+const getPopular = (num) => {
+  return  Play.find({}).sort({likedByUsers : -1}).limit(num).lean();
+}
+
 module.exports = {
     create,
     getAll,
     getOne,
     likePlay,
     deletePlay,
-    updateOne
+    updateOne,
+    getPopular
 }

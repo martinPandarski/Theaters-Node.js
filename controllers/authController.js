@@ -39,7 +39,8 @@ router.post('/register', (req, res, next)=>{
        res.redirect('/auth/login')
     })
     .catch(err => {
-       next(err)
+       let error = Object.keys(err.errors).map(x => ({message: err.errors[x].message}))[0];
+       res.render('partials/register', {error})
     }) 
 
       

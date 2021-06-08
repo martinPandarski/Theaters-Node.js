@@ -18,7 +18,10 @@ router.post('/create', isAuth, (req, res, next) => {
     .then(createdPlay => {
         res.redirect('/')
     })
-    .catch(next)
+    .catch(err => {
+        let error = Object.keys(err.errors).map(x => ({message: err.errors[x].message}))[0];
+        res.render('partials/createPlay', {error})
+    })
 })
 
 //EDIT PLAY
