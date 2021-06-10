@@ -1,6 +1,6 @@
 # Theaters App
 Created with Node.js,Express, MongoDB Atlas & Mongoose. 
-This is the solution for the JS Backend course in Softuni.org.
+This is the solution for the JS Backend course Exam Preparation in softuni.org.
 
 
 ## Features
