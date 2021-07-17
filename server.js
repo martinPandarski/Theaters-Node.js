@@ -11,7 +11,9 @@ app.use(routes)
 
 app.use(errorHandler)
 
-
+// app.get('/', function (req, res) {
+//     res.send('hello world')
+//   })
 app.listen(PORT, ()=> {
     console.log('Server is running on port ' + PORT)
 })
